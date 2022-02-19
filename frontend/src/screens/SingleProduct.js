@@ -16,7 +16,7 @@ const SingleProduct = ({ match }) => {
       console.log(data);
     };
     fetchProducts();
-  }, []);
+  }, [match]);
 
   return (
     <>
