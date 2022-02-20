@@ -14,6 +14,8 @@ const app = express();
 // ? API
 app.use("/api/import", ImportData);
 app.use("/api/products", productRoute);
+
+// ? error handler
 app.use(notFound);
 app.use(errorHandler);
 

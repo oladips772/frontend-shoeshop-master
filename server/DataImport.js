@@ -8,7 +8,6 @@ import asyncHandler from "express-async-handler";
 
 const ImportData = express.Router();
 
-
 ImportData.post(
   "/user",
   asyncHandler(async (req, res) => {
