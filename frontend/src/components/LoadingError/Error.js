@@ -1,3 +1,4 @@
+/** @format */
 import React from "react";
 
 const Message = ({ variant, children }) => {
