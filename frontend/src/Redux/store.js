@@ -19,10 +19,12 @@ const cartItemsFromLocalStorage = localStorage.getItem("cartItems")
   : [];
 
 const initialState = {
-  cart: { cartItemsFromLocalStorage },
+  cart: {
+    cartItems:cartItemsFromLocalStorage
+  },
 };
 
-const middleware = [thunk];
+const middleware = [thunk];                                                                                                                                                                                                                                          
 
 const store = createStore(
   reducer,

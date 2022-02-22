@@ -20,7 +20,7 @@ const SingleProduct = ({ match, history }) => {
     e.preventDefault();
     history.push(`/cart/${productId}?qty=${qty}`);
   };
-
+ 
   useEffect(() => {
     dispatch(listProductDetails(productId));
   }, [dispatch, productId]);
