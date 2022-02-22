@@ -26,7 +26,7 @@ export const cartReducer = (
       } else {
         return {
           ...state,
-          cartItems: [...state.cartItems, item],
+          cartItems: state.cartItems.map((x)=> x.product === existItem.product ? item : x)
         };
       }
     case CART_REMOVE_ITEM:
