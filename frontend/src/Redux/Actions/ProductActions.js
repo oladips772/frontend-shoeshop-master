@@ -26,7 +26,6 @@ export const listProduct = () => async (dispatch) => {
   }
 };
 
-
 // SINGLE PRODUCT
 export const listProductDetails = (id) => async (dispatch) => {
   try {
