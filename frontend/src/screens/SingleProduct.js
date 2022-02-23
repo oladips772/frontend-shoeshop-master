@@ -20,7 +20,7 @@ const SingleProduct = ({ match, history }) => {
     e.preventDefault();
     history.push(`/cart/${productId}?qty=${qty}`);
   };
- 
+
   useEffect(() => {
     dispatch(listProductDetails(productId));
   }, [dispatch, productId]);
@@ -72,7 +72,10 @@ const SingleProduct = ({ match, history }) => {
                       <>
                         <div className="flex-box d-flex justify-content-between align-items-center">
                           <h6>Quantity</h6>
-                          <select>
+                          <select
+                            value={qty}
+                            onChange={(e) => setQty(e.target.value)}
+                          >
                             {[...Array(product.countInStock).keys()].map(
                               (x) => (
                                 <option key={x + 1} value={x + 1}>
