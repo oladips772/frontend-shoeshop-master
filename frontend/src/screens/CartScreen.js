@@ -1,9 +1,8 @@
 /** @format */
-
 import React, { useEffect } from "react";
 import Header from "./../components/Header";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import {  useDispatch } from "react-redux";
 import { addToCart } from "../Redux/Actions/CartActions";
 
 const CartScreen = ({ match, location }) => {
