@@ -20,8 +20,7 @@ export const cartReducer = (
       } else {
         return {
           ...state,
-          cartItems:[...state.cartItems,item]
-          
+          cartItems: [...state.cartItems, item],
         };
       }
     // *
