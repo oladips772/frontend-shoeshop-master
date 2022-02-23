@@ -59,7 +59,7 @@ const CartScreen = ({ match, location, history }) => {
               <div className="cart-iterm row">
                 <div
                   className="remove-button d-flex justify-content-center align-items-center"
-                  onClick={removeFromCartHandle(item.id)}
+                  onClick={() => removeFromCartHandle(item.product)}
                 >
                   <i className="fas fa-times"></i>
                 </div>
