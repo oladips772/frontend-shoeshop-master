@@ -30,4 +30,28 @@ userRoute.get(
   })
 );
 
+// PROFILE ROUTE
+
+// PROFILE
+userRoute.get(
+  "/profile",
+  // protect,
+  asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        createdAt: user.createdAt,
+      });
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
+  })
+);
+
 export default userRoute;
