@@ -30,7 +30,6 @@ userRoute.get(
   })
 );
 
-// PROFILE ROUTE
 
 // PROFILE
 userRoute.get(
