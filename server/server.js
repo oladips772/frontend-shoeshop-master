@@ -1,19 +1,23 @@
 /** @format */
 import express from "express";
 import products from "./data/Products.js";
+import users from "./data/users.js";
 import dotenv from "dotenv";
 import connectDataBase from "./config/MongoDb.js";
 import ImportData from "./DataImport.js";
 import productRoute from "./Routes/ProductRoutes.js";
+import userRoute from "./Routes/userRoutes.js";
 import { notFound, errorHandler } from "./Middleware/Error.js";
 
 dotenv.config();
 connectDataBase();
 const app = express();
+app.use(express.json());
 
 // ? API
 app.use("/api/import", ImportData);
 app.use("/api/products", productRoute);
+app.use("/api/users", userRoute);
 
 // ? error handler
 app.use(notFound);
