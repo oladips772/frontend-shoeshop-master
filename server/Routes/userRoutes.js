@@ -8,7 +8,7 @@ import generateToken from "../utils/generateToken.js";
 const userRoute = express.Router();
 
 // ? LOGIN IN A USER
-userRoute.get(
+userRoute.post(
   "/login",
   asyncHandler(async (req, res) => {
     const { email, password } = req.body;

@@ -7,6 +7,9 @@ import { useSelector } from "react-redux";
 const Header = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+   const userLogin = useSelector((state) => state.userLogin);
+   const { error, loading, userInfo } = userLogin;
+   const dispatch = useDispatch();
 
   return (
     <div>

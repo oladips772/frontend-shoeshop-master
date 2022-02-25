@@ -14,9 +14,9 @@ import {
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
-} from "../Constants/UserContants";
+} from "../Constants/UserConstants";
 import axios from "axios";
-import { ORDER_LIST_MY_RESET } from "../Constants/OrderConstants";
+// import { ORDER_LIST_MY_RESET } from "../Constants/OrderConstants";
 
 // LOGIN
 export const login = (email, password) => async (dispatch) => {
@@ -30,7 +30,7 @@ export const login = (email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `/api/users/login`,
+      "/api/users/login",
       { email, password },
       config
     );
