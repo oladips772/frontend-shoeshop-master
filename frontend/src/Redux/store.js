@@ -22,7 +22,7 @@ const cartItemsFromLocalStorage = localStorage.getItem("cartItems")
   : [];
 
   const userInfoFromLocalStorage = localStorage.getItem("userInfo")
-    ? JSON.parse(localStorage.getItem("userinfo"))
+    ? JSON.parse(localStorage.getItem("userInfo"))
     : null;
 
 const initialState = {
