@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import Header from "./../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../Redux/Actions/UserActions";
+import Message from "../components/LoadingError/Error";
+import Loading from "../components/LoadingError/Loading";
 
 const Register = ({ location, history }) => {
   window.scrollTo(0, 0);
@@ -11,25 +13,27 @@ const Register = ({ location, history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { error, loading, userInfo } = userLogin;
+  const userRegister = useSelector((state) => state.userRegister);
+  const { error, loading, userInfo } = userRegister;
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
   useEffect(() => {
     if (userInfo) {
       history.push(redirect);
     }
-  }, [error, dispatch, loading]);
+  }, [userInfo, history, redirect]);
 
   const registerHandler = (e) => {
     e.preventDefault();
-    dispatch(register(email, name, password));
+    dispatch(register(name, email, password));
   };
 
   return (
     <>
       <Header />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
+        {error && <Message variant="alert-danger">{error}</Message>}
+        {loading && <Loading />}
         <form
           className="Login col-md-8 col-lg-4 col-11"
           onSubmit={registerHandler}
@@ -55,7 +59,7 @@ const Register = ({ location, history }) => {
 
           <button type="submit">Register</button>
           <p>
-            <Link to={"/login"}>
+            <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
               I Have Account <strong>Login</strong>
             </Link>
           </p>

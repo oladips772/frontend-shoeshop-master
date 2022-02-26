@@ -30,7 +30,6 @@ userRoute.post(
   })
 );
 
-
 // PROFILE
 userRoute.get(
   "/profile",
