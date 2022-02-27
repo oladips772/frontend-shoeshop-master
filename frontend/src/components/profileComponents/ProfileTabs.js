@@ -42,7 +42,10 @@ const ProfileTabs = () => {
       }
     } else {
       dispatch(updateUserProfile({ id: user._id, name, email, password }));
-       toastId.current = toast.success("Profile updated succesfully", toastObjects);
+      toastId.current = toast.success(
+        "Profile updated succesfully",
+        toastObjects
+      );
     }
   };
 
