@@ -1,9 +1,15 @@
-import React from "react";
+/** @format */
+import React,{useState} from "react";
 import { Link } from "react-router-dom";
 import Header from "./../components/Header";
+import { useSelector, useDispatch } from "react-redux";
 
 const PaymentScreen = () => {
   window.scrollTo(0, 0);
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+  const { shippingAddress } = cart;
+  const [paymentMethod, setPaymentMethod] = useState("PayPal");
 
   const submitHandler = (e) => {
     e.preventDefault();

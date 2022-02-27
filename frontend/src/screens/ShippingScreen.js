@@ -2,18 +2,22 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import { useSelector, useDispatch } from "react-redux";
+import { saveShippingAddress } from "../Redux/Actions/CartActions";
 
-
-const ShippingScreen = () => {
-  window.scrollTo(0, 0);
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [country, setCountry] = useState("");
+const ShippingScreen = ({history}) => {
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+  const { shippingAddress } = cart;
+  window.scrollTo(0, 0);
+  const [address, setAddress] = useState(shippingAddress.address);
+  const [city, setCity] = useState(shippingAddress.city);
+  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
+  const [country, setCountry] = useState(shippingAddress.country);
 
   const submitHandler = (e) => {
     e.preventDefault();
+    dispatch(saveShippingAddress({ address, city, postalCode, country }))
+    history.push("/payment") 
   };
 
   return (
