@@ -1,11 +1,12 @@
 /** @format */
-import React from "react";
+import React,{useEffect} from "react";
 import { Link } from "react-router-dom";
 import Header from "./../components/Header";
 import { useSelector, useDispatch } from "react-redux";
 import Message from "../components/LoadingError/Error";
+import {ORDER_CREATE_RESET} from "../Redux/Constants/OrderConstants"
 
-const PlaceOrderScreen = () => {
+const PlaceOrderScreen = ({history}) => {
   window.scrollTo(0, 0);
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
@@ -15,6 +16,9 @@ const PlaceOrderScreen = () => {
   const placeOrderHandler = (e) => {
     e.preventDefault();
   };
+
+  const orderCreate = useSelector(state => state.orderCreate);
+  const { order, success, error } = orderCreate;
 
   // calculate price
 
@@ -27,10 +31,15 @@ const PlaceOrderScreen = () => {
   );
 
   cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 50 : 30);
-  
+
   cart.totalPrice = (
     Number(cart.itemsPrice) + Number(cart.shippingPrice)
   ).toFixed(2);
+
+  useEffect(() => {
+    history.push(`/order/${order._id}`)
+    dispatch({type:ORDER_CREATE_RESET})
+    },[order,history,success,dispatch])
 
   return (
     <>
