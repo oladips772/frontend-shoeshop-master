@@ -2,9 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Header from "./../components/Header";
 import { PayPalButton } from "react-paypal-button-v2";
+import { useSelector, useDispatch } from "react-redux";
+
 
 const OrderScreen = () => {
   window.scrollTo(0, 0);
+   const dispatch = useDispatch();
+   const cart = useSelector((state) => state.cart);
+   const userLogin = useSelector((state) => state.userLogin);
+   const { userInfo } = userLogin;
 
   return (
     <>
@@ -22,9 +28,9 @@ const OrderScreen = () => {
                 <h5>
                   <strong>Customer</strong>
                 </h5>
-                <p>Admin Doe</p>
+                <p>{userInfo.name}</p>
                 <p>
-                  <a href={`mailto:admin@example.com`}>admin@example.com</a>
+                  <a href={`mailto:admin@example.com`}>{userInfo.email}</a>
                 </p>
               </div>
             </div>
@@ -41,9 +47,8 @@ const OrderScreen = () => {
                 <h5>
                   <strong>Order info</strong>
                 </h5>
-                <p>Shipping: Tanzania</p>
-                <p>Pay method: Paypal</p>
-
+                <p>Shipping: {cart.shippingAddress.country}</p>
+                <p>Pay method: {cart.paymentMethod}</p>
                 <div className="bg-info p-2 col-12">
                   <p className="text-white text-center text-sm-start">
                     Paid on Jan 12 2021
@@ -65,7 +70,7 @@ const OrderScreen = () => {
                   <strong>Deliver to</strong>
                 </h5>
                 <p>
-                  Address: Arusha Tz, Ngaramtoni Crater, P.O BOX 1234 Arusha Tz
+                  Address: {cart.shippingAddress.address}, {cart.shippingAddress.city},  {cart.shippingAddress.postalCode}
                 </p>
                 <div className="bg-danger p-1 col-12">
                   <p className="text-white text-center text-sm-start">

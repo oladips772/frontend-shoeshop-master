@@ -7,6 +7,8 @@ import connectDataBase from "./config/MongoDb.js";
 import ImportData from "./DataImport.js";
 import productRoute from "./Routes/ProductRoutes.js";
 import userRoute from "./Routes/userRoutes.js";
+import orderRoute from "./Routes/orderRoutes.js";
+
 import { notFound, errorHandler } from "./Middleware/Error.js";
 
 dotenv.config();
@@ -18,6 +20,7 @@ app.use(express.json());
 app.use("/api/import", ImportData);
 app.use("/api/products", productRoute);
 app.use("/api/users", userRoute);
+app.use("/api/orders", orderRoute);
 
 // ? error handler
 app.use(notFound);
