@@ -1,27 +1,22 @@
 /** @format */
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "./../components/Header";
 import { useSelector, useDispatch } from "react-redux";
 import Message from "../components/LoadingError/Error";
-import {ORDER_CREATE_RESET} from "../Redux/Constants/OrderConstants"
+import { ORDER_CREATE_RESET } from "../Redux/Constants/OrderConstants";
+import { createOrder } from "../Redux/Actions/OrderActions";
 
-const PlaceOrderScreen = ({history}) => {
+const PlaceOrderScreen = ({ history }) => {
   window.scrollTo(0, 0);
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-
-  const placeOrderHandler = (e) => {
-    e.preventDefault();
-  };
-
-  const orderCreate = useSelector(state => state.orderCreate);
+  const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
 
   // calculate price
-
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
@@ -37,9 +32,25 @@ const PlaceOrderScreen = ({history}) => {
   ).toFixed(2);
 
   useEffect(() => {
-    history.push(`/order/${order._id}`)
-    dispatch({type:ORDER_CREATE_RESET})
-    },[order,history,success,dispatch])
+    if (success) {
+      history.push(`/order/${order._id}`);
+      dispatch({ type: ORDER_CREATE_RESET });
+    }
+  }, [history, dispatch, success, order]);
+
+  const placeOrderHandler = (e) => {
+    e.preventDefault();
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
+  };
 
   return (
     <>
@@ -51,7 +62,7 @@ const PlaceOrderScreen = ({history}) => {
               <div className="col-md-4 center">
                 <div className="alert-success order-box">
                   <i class="fas fa-user"></i>
-                </div>
+                 </div>
               </div>
               <div className="col-md-8 center">
                 <h5>
@@ -157,13 +168,15 @@ const PlaceOrderScreen = ({history}) => {
               </tbody>
             </table>
             <button type="submit" onClick={placeOrderHandler}>
-              <Link to="/order" className="text-white">
-                PLACE ORDER
-              </Link>
+              PLACE ORDER
             </button>
-            {/* <div className="my-3 col-12">
-                <Message variant="alert-danger">{error}</Message>
-              </div> */}
+            {error && (
+              <>
+                <div className="my-3 col-12">
+                  <Message variant="alert-danger">{error}</Message>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
