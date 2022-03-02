@@ -8,33 +8,38 @@ import Message from "../components/LoadingError/Error";
 import { getOrderDetails } from "../Redux/Actions/OrderActions";
 import { ORDER_DETAILS_REQUEST } from "../Redux/Constants/OrderConstants";
 import Loading from "../components/LoadingError/Loading";
+import moment from "moment";
 
 const OrderScreen = ({ match }) => {
   window.scrollTo(0, 0);
   const dispatch = useDispatch();
   const orderId = match.params.id;
   const orderDetails = useSelector((state) => state.orderDetails);
-  // const userLogin = useSelector((state) => state.userLogin);
   const { error, loading, order } = orderDetails;
 
+  if(!loading){
+     // calculate price
+  const addDecimals = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2);
+  };
+
+  order.itemsPrice = addDecimals(
+    order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+  );
+  }
+  
   useEffect(() => {
     dispatch(getOrderDetails(orderId));
   }, [dispatch, orderId]);
 
-  // calculate price
-  // const addDecimals = (num) => {
-  //   return (Math.round(num * 100) / 100).toFixed(2);
-  // };
+ 
 
-  // cart.itemsPrice = addDecimals(
-  //   cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-  // );
+  // order.shippingPrice = addDecimals(order.itemsPrice > 100 ? 50 : 30);
 
-  // cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 50 : 30);
-
-  // cart.totalPrice = (
-  //   Number(cart.itemsPrice) + Number(cart.shippingPrice)
+  // order.totalPrice = (
+  //   Number(order.itemsPrice) + Number(order.shippingPrice)
   // ).toFixed(2);
+
 
   return (
     <>
@@ -84,7 +89,7 @@ const OrderScreen = ({ match }) => {
                     {order.isPaid ? (
                       <div className="bg-info p-2 col-12">
                         <p className="text-white text-center text-sm-start">
-                          Paid on Jan 12 2021
+                          Paid on {moment(order.paidAt).calendar()}
                         </p>
                       </div>
                     ) : (
@@ -114,11 +119,19 @@ const OrderScreen = ({ match }) => {
                       {order.shippingAddress.city},{" "}
                       {order.shippingAddress.postalCode}
                     </p>
-                    <div className="bg-danger p-1 col-12">
-                      <p className="text-white text-center text-sm-start">
-                        Not Delivered
-                      </p>
-                    </div>
+                      {order.isDelivered ? (
+                      <div className="bg-info p-2 col-12">
+                        <p className="text-white text-center text-sm-start">
+                          Delivered on {moment(order.deliveredAt).calendar()}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="bg-danger p-2 col-12">
+                        <p className="text-white text-center text-sm-start">
+                          Not Delivered
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -137,9 +150,7 @@ const OrderScreen = ({ match }) => {
                           <img src={item.image} alt={item.name} />
                         </div>
                         <div className="col-md-5 col-6 d-flex align-items-center">
-                          <Link to={`/`}>
                             <h6>{item.name}</h6>
-                          </Link>
                         </div>
                         <div className="mt-3 mt-md-0 col-6 col-md-2  d-flex align-items-center flex-column justify-content-center ">
                           <h4>QUANTITY</h4>
