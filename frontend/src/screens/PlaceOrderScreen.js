@@ -40,7 +40,7 @@ const PlaceOrderScreen = ({ history }) => {
 
   const placeOrderHandler = (e) => {
     e.preventDefault();
-    dispatch(
+    dispatch( 
       createOrder({
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,

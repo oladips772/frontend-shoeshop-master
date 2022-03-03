@@ -90,7 +90,6 @@ export const payOrder =
   (orderId, paymentResult) => async (dispatch, getState) => {
     try {
       dispatch({ type: ORDER_PAY_REQUEST });
-
       const {
         userLogin: { userInfo },
       } = getState();

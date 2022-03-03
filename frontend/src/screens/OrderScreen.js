@@ -4,12 +4,15 @@ import { Link } from "react-router-dom";
 import Header from "./../components/Header";
 import { PayPalButton } from "react-paypal-button-v2";
 import { useSelector, useDispatch } from "react-redux";
-import Message from "../components/LoadingError/Error";
-import { getOrderDetails } from "../Redux/Actions/OrderActions";
-import { ORDER_DETAILS_REQUEST } from "../Redux/Constants/OrderConstants";
-import Loading from "../components/LoadingError/Loading";
+import { getOrderDetails, payOrder } from "../Redux/Actions/OrderActions";
+import {
+  ORDER_DETAILS_REQUEST,
+  ORDER_PAY_RESET,
+} from "../Redux/Constants/OrderConstants";
+import Loading from "./../components/LoadingError/Loading";
+import Message from "./../components/LoadingError/Error";
+import axios from "axios";
 import moment from "moment";
-import axios from axios;
 
 const OrderScreen = ({ match }) => {
   window.scrollTo(0, 0);
@@ -21,39 +24,51 @@ const OrderScreen = ({ match }) => {
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
 
-  if(!loading){
-     // calculate price
-  const addDecimals = (num) => {
-    return (Math.round(num * 100) / 100).toFixed(2);
+  if (!loading) {
+    // calculate price
+    const addDecimals = (num) => {
+      return (Math.round(num * 100) / 100).toFixed(2);
+    };
+
+    order.itemsPrice = addDecimals(
+      order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+    );
+  }
+
+  const successPaymentHandler = (paymentResult) => {
+    dispatch(payOrder(orderId, paymentResult));
   };
 
-  order.itemsPrice = addDecimals(
-    order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-  );
-  }
-  
   useEffect(() => {
-    const addPayPal = async () => {
-      const { data: clientId } = await axios.get("/api/config/paypal")
+    const addPayPalScript = async () => {
+      const { data: clientId } = await axios.get("/api/config/paypal");
       const script = document.createElement("script");
       script.type = "text/javascript";
       script.src = `www.paypal.com/sdk/js?client-id=${clientId}`;
       script.async = true;
       script.onload = () => {
         setSdkReady(true);
-      }
-      document.body.appendChlid(script);
+      };
+      document.body.appendChild(script);
     };
+    if (!order || successPay) {
+      dispatch({ type: ORDER_PAY_RESET });
+      dispatch(getOrderDetails(orderId));
+    } else if (!order.isPaid) {
+      if (!window.paypal) {
+        addPayPalScript();
+      } else {
+        setSdkReady(true);
+      }
+    }
     dispatch(getOrderDetails(orderId));
-  }, [dispatch, orderId]);
+  }, [dispatch, orderId, successPay, order]);
 
- 
   // order.shippingPrice = addDecimals(order.itemsPrice > 100 ? 50 : 30);
 
   // order.totalPrice = (
   //   Number(order.itemsPrice) + Number(order.shippingPrice)
   // ).toFixed(2);
-
 
   return (
     <>
@@ -109,7 +124,7 @@ const OrderScreen = ({ match }) => {
                     ) : (
                       <div className="bg-danger p-2 col-12">
                         <p className="text-white text-center text-sm-start">
-                          Not paid 
+                          Not paid
                         </p>
                       </div>
                     )}
@@ -133,7 +148,7 @@ const OrderScreen = ({ match }) => {
                       {order.shippingAddress.city},{" "}
                       {order.shippingAddress.postalCode}
                     </p>
-                      {order.isDelivered ? (
+                    {order.isDelivered ? (
                       <div className="bg-info p-2 col-12">
                         <p className="text-white text-center text-sm-start">
                           Delivered on {moment(order.deliveredAt).calendar()}
@@ -164,7 +179,7 @@ const OrderScreen = ({ match }) => {
                           <img src={item.image} alt={item.name} />
                         </div>
                         <div className="col-md-5 col-6 d-flex align-items-center">
-                            <h6>{item.name}</h6>
+                          <h6>{item.name}</h6>
                         </div>
                         <div className="mt-3 mt-md-0 col-6 col-md-2  d-flex align-items-center flex-column justify-content-center ">
                           <h4>QUANTITY</h4>
@@ -203,9 +218,19 @@ const OrderScreen = ({ match }) => {
                     </tr>
                   </tbody>
                 </table>
-                <div className="col-12">
-                  <PayPalButton amount={345} />
-                </div>
+                {!order.isPaid && (
+                  <div className="col-12">
+                    {loadingPay && <Loading />}
+                    {!sdkReady ? (
+                      <Loading />
+                    ) : (
+                      <PayPalButton
+                        amount={order.totalPrice}
+                        onSuccess={successPaymentHandler}
+                      />
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </>
