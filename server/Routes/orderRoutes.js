@@ -86,4 +86,14 @@ orderRoute.put(
   })
 );
 
+// USER LOGIN ORDERS
+orderRoute.get(
+  "/",
+  protect,
+  asyncHandler(async (req, res) => {
+    const order = await Order.find({ user: req.user._id }).sort({ _id: -1 });
+    res.json(order);
+  })
+);
+
 export default orderRoute;
