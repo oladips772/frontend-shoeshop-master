@@ -1,3 +1,5 @@
+/** @format */
+
 import React from "react";
 import "./App.css";
 import "./responsive.css";
@@ -13,22 +15,26 @@ import Login from "./screens/LoginScreen";
 import UsersScreen from "./screens/UsersScreen";
 import ProductEditScreen from "./screens/ProductEditScreen";
 import NotFound from "./screens/NotFound";
+import PrivateRouter from "./PrivateRouter";
 
 function App() {
   return (
     <>
       <Router>
         <Switch>
-          <Route path="/" component={HomeScreen} exact />
-          <Route path="/products" component={ProductScreen} />
-          <Route path="/category" component={CategoriesScreen} />
-          <Route path="/orders" component={OrderScreen} />
-          <Route path="/order" component={OrderDetailScreen} />
-          <Route path="/addproduct" component={AddProduct} />
-          <Route path="/users" component={UsersScreen} />
-          <Route path="/product/:id/edit" component={ProductEditScreen} />
+          <PrivateRouter path="/" component={HomeScreen} exact />
+          <PrivateRouter path="/products" component={ProductScreen} />
+          <PrivateRouter path="/category" component={CategoriesScreen} />
+          <PrivateRouter path="/orders" component={OrderScreen} />
+          <PrivateRouter path="/order" component={OrderDetailScreen} />
+          <PrivateRouter path="/addproduct" component={AddProduct} />
+          <PrivateRouter path="/users" component={UsersScreen} />
+          <PrivateRouter
+            path="/product/:id/edit"
+            component={ProductEditScreen}
+          />
           <Route path="/login" component={Login} />
-          <Route path="*" component={NotFound} />
+          <PrivateRouter path="*" component={NotFound} />
         </Switch>
       </Router>
     </>
