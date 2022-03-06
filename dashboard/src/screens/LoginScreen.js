@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { login } from "../Redux/Actions/UserActions";
 import Message from "../components/LoadingError/Error";
 import Loading from "../components/LoadingError/Loading";
+import Toast from "../components/LoadingError/Toast";
 
 const Login = ({ location, history }) => {
   const [email, setEmail] = useState("");
@@ -26,6 +27,7 @@ const Login = ({ location, history }) => {
 
   return (
     <>
+      <Toast />
       <div
         className="card shadow mx-auto"
         style={{ maxWidth: "380px", marginTop: "100px" }}
