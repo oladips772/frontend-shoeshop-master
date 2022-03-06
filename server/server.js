@@ -1,7 +1,6 @@
 /** @format */
 import express from "express";
 import products from "./data/Products.js";
-import users from "./data/users.js";
 import dotenv from "dotenv";
 import connectDataBase from "./config/MongoDb.js";
 import ImportData from "./DataImport.js";
