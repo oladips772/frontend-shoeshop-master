@@ -1,7 +1,12 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const UserComponent = () => {
+  const dispatch = useDispatch()
+  const userListReducer = useSelector((state) => state.userListReducer);
+  const { error, loading, users } = userListReducer;
+  
   return (
     <section className="content-main">
       <div className="content-header">
