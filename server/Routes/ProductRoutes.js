@@ -2,7 +2,7 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
 import Product from "./../Models/productModel.js";
-import { protect } from "../Middleware/Authmiddleware.js";
+import { protect,admin } from "../Middleware/Authmiddleware.js";
 
 const productRoute = express.Router();
 
@@ -40,6 +40,17 @@ productRoute.get(
       res.status(404);
       throw new Error("product not found with such id");
     }
+  })
+);
+
+// ADMIN GET ALL PRODUCTS -- NO SEARCH && PAGINATION
+productRoute.get(
+  "/all",
+  protect,
+  admin,
+  asyncHandler(async (req, res) => {
+    const products = await Product.find({}).sort({ _id: -1 });
+    res.json(products);
   })
 );
 

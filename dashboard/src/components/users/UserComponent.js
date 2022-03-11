@@ -75,7 +75,7 @@ const UserComponent = () => {
                     <div className="card-body">
                       <h5 className="card-title mt-5">{user.name}</h5>
                       <div className="card-text text-muted">
-                        <p>{user.isAdmin ? "Admin" : "User"}</p>
+                        <p>{user.isAdmin ? "Admin" : "Customer"}</p>
                         <p>
                           <a href={`mailto:admin@example.com`}>{user.email}</a>
                         </p>
@@ -84,29 +84,6 @@ const UserComponent = () => {
                   </div>
                 </div>
               ))}
-              {/* user */}
-              {/* <div className="col">
-                <div className="card card-user shadow-sm">
-                  <div className="card-header">
-                    <img
-                      className="img-md img-avatar"
-                      src="images/favicon.png"
-                      alt="User pic"
-                    />
-                  </div>
-                  <div className="card-body">
-                    <h5 className="card-title mt-5">User</h5>
-                    <div className="card-text text-muted">
-                      <p className="m-0">Customer</p>
-                      <p>
-                        <a href={`mailto:admin@example.com`}>
-                          user@example.com
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
             </div>
           )}
 

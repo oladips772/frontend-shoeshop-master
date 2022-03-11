@@ -1,10 +1,20 @@
-import React from "react";
+/** @format */
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Product from "./Product";
 import products from "./../../data/Products";
+import { useDispatch, useSelector } from "react-redux";
+import { listProduct } from "../../Redux/Actions/ProductActions";
 
 const MainProducts = () => {
-  
+  const dispatch = useDispatch();
+  const productListReducer = useSelector((state) => state.productListReducer);
+  const { productss, loading, error } = productListReducer;
+
+  useEffect(() => {
+    dispatch(listProduct());
+  }, [dispatch]);
+
   return (
     <section className="content-main">
       <div className="content-header">
