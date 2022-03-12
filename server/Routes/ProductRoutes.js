@@ -89,7 +89,6 @@ productRoute.post(
   })
 );
 
-
 // DELETE PRODUCT
 productRoute.delete(
   "/:id",
@@ -103,6 +102,61 @@ productRoute.delete(
     } else {
       res.status(404);
       throw new Error("Product not Found");
+    }
+  })
+);
+
+// CREATE PRODUCT
+productRoute.post(
+  "/",
+  protect,
+  admin,
+  asyncHandler(async (req, res) => {
+    const { name, price, description, image, countInStock } = req.body;
+    const productExist = await Product.findOne({ name });
+    if (productExist) {
+      res.status(400);
+      throw new Error("Product name already exist");
+    } else {
+      const product = new Product({
+        name,
+        price,
+        description,
+        image,
+        countInStock,
+        user: req.user._id,
+      });
+      if (product) {
+        const createdproduct = await product.save();
+        res.status(201).json(createdproduct);
+      } else {
+        res.status(400);
+        throw new Error("Invalid product data");
+      }
+    }
+  })
+);
+
+// UPDATE PRODUCT
+productRoute.put(
+  "/:id",
+  protect,
+  admin,
+  asyncHandler(async (req, res) => {
+    const { name, price, description, image, countInStock } = req.body;
+    const product = await Product.findById(req.params.id);
+    if (product) {
+      product.name = name || product.name;
+      product.price = price || product.price;
+      product.description = description || product.description;
+      product.image = image || product.image;
+      product.countInStock = countInStock || product.countInStock;
+
+      const updatedProduct = await product.save();
+      res.json(updatedProduct);
+    } else {
+      res.status(404);
+      throw new Error("Product not found");
     }
   })
 );

@@ -9,7 +9,7 @@ const Product = (props) => {
   const { product } = props;
   const dispatch = useDispatch();
 
-  const handleDelete = (id) => {
+  const handleDelete = ( id) => {
     if (window.confirm("Are you sure")) {
       dispatch(deleteProduct(id));
     }
@@ -35,6 +35,7 @@ const Product = (props) => {
                 <i className="fas fa-pen"></i>
               </Link>
               <Link
+                to="#"
                 className="btn btn-sm btn-outline-danger p-2 pb-3 col-md-6"
                 onClick={() => handleDelete(product._id)}
               >
