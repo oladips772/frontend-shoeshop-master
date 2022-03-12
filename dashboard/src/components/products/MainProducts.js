@@ -4,18 +4,22 @@ import { Link } from "react-router-dom";
 import Product from "./Product";
 import { useDispatch, useSelector } from "react-redux";
 import { listProduct } from "../../Redux/Actions/ProductActions";
-import Loading from "../LoadingError/Loading"
-import Message from "../LoadingError/Error"
-
+import Loading from "../LoadingError/Loading";
+import Message from "../LoadingError/Error";
 
 const MainProducts = () => {
   const dispatch = useDispatch();
   const productListReducer = useSelector((state) => state.productListReducer);
   const { products, loading, error } = productListReducer;
 
+  const productDeleteReducer = useSelector(
+    (state) => state.productDeleteReducer
+  );
+  const { error: deleteError, success: successDelete } = productDeleteReducer;
+
   useEffect(() => {
     dispatch(listProduct());
-  }, [dispatch]);
+  }, [dispatch, successDelete]);
 
   return (
     <section className="content-main">
@@ -54,16 +58,23 @@ const MainProducts = () => {
               </select>
             </div>
           </div>
-        </header> 
+        </header>
 
         <div className="card-body">
-          {loading ? (<Loading />) : error ? (<Message variant="alert-danger">{error}</Message>) : (
-          <div className="row">
-            {/* Products */}
-            {products.map((product) => (
-              <Product product={product} key={product._id} />
-            ))}
-          </div>
+          {deleteError && (
+            <Message variant="alert-danger">{deleteError}</Message>
+          )}
+          {loading ? (
+            <Loading />
+          ) : error ? (
+            <Message variant="alert-danger">{error}</Message>
+          ) : (
+            <div className="row">
+              {/* Products */}
+              {products.map((product) => (
+                <Product product={product} key={product._id} />
+              ))}
+            </div>
           )}
           <nav className="float-end mt-4" aria-label="Page navigation">
             <ul className="pagination">
