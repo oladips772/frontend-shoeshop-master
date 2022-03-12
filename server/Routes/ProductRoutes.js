@@ -2,7 +2,7 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
 import Product from "./../Models/productModel.js";
-import { protect,admin } from "../Middleware/Authmiddleware.js";
+import { protect, admin } from "../Middleware/Authmiddleware.js";
 
 const productRoute = express.Router();
 
@@ -29,6 +29,18 @@ productRoute.get(
   })
 );
 
+
+// ADMIN GET ALL PRODUCT WITHOUT SEARCH AND PEGINATION
+productRoute.get(
+  "/all",
+  protect,
+  admin,
+  asyncHandler(async (req, res) => {
+    const products = await Product.find({}).sort({ _id: -1 });
+    res.json(products);
+  })
+);
+
 // ? GETTING SINGLE PRODUCT
 productRoute.get(
   "/:id",
@@ -43,16 +55,7 @@ productRoute.get(
   })
 );
 
-// ADMIN GET ALL PRODUCTS -- NO SEARCH && PAGINATION
-productRoute.get(
-  "/all",
-  protect,
-  admin,
-  asyncHandler(async (req, res) => {
-    const products = await Product.find({}).sort({ _id: -1 });
-    res.json(products);
-  })
-);
+
 
 //  PRODUCT REVEIW
 productRoute.post(

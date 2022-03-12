@@ -2,14 +2,14 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Product from "./Product";
-import products from "./../../data/Products";
 import { useDispatch, useSelector } from "react-redux";
 import { listProduct } from "../../Redux/Actions/ProductActions";
+
 
 const MainProducts = () => {
   const dispatch = useDispatch();
   const productListReducer = useSelector((state) => state.productListReducer);
-  const { productss, loading, error } = productListReducer;
+  const { products, loading, error } = productListReducer;
 
   useEffect(() => {
     dispatch(listProduct());
@@ -56,6 +56,7 @@ const MainProducts = () => {
 
         <div className="card-body">
           <div className="row">
+
             {/* Products */}
             {products.map((product) => (
               <Product product={product} key={product._id} />
