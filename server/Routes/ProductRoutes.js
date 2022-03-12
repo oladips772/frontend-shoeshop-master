@@ -89,7 +89,7 @@ productRoute.post(
   })
 );
 
-// DELETE PRODUCT
+
 // DELETE PRODUCT
 productRoute.delete(
   "/:id",
@@ -106,6 +106,5 @@ productRoute.delete(
     }
   })
 );
-
 
 export default productRoute;
