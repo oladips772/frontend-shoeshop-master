@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import Product from "./Product";
 import { useDispatch, useSelector } from "react-redux";
 import { listProduct } from "../../Redux/Actions/ProductActions";
+import Loading from "../LoadingError/Loading"
+import Message from "../LoadingError/Error"
 
 
 const MainProducts = () => {
@@ -52,17 +54,17 @@ const MainProducts = () => {
               </select>
             </div>
           </div>
-        </header>
+        </header> 
 
         <div className="card-body">
+          {loading ? (<Loading />) : error ? (<Message variant="alert-danger">{error}</Message>) : (
           <div className="row">
-
             {/* Products */}
             {products.map((product) => (
               <Product product={product} key={product._id} />
             ))}
           </div>
-
+          )}
           <nav className="float-end mt-4" aria-label="Page navigation">
             <ul className="pagination">
               <li className="page-item disabled">

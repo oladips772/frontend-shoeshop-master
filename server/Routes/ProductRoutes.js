@@ -29,7 +29,6 @@ productRoute.get(
   })
 );
 
-
 // ADMIN GET ALL PRODUCT WITHOUT SEARCH AND PEGINATION
 productRoute.get(
   "/all",
@@ -54,8 +53,6 @@ productRoute.get(
     }
   })
 );
-
-
 
 //  PRODUCT REVEIW
 productRoute.post(
@@ -91,5 +88,24 @@ productRoute.post(
     }
   })
 );
+
+// DELETE PRODUCT
+// DELETE PRODUCT
+productRoute.delete(
+  "/:id",
+  protect,
+  admin,
+  asyncHandler(async (req, res) => {
+    const product = await Product.findById(req.params.id);
+    if (product) {
+      await product.remove();
+      res.json({ message: "Product deleted successfully" });
+    } else {
+      res.status(404);
+      throw new Error("Product not Found");
+    }
+  })
+);
+
 
 export default productRoute;
