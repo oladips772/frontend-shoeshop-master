@@ -7,6 +7,7 @@ import { PRODUCT_CREATE_RESET } from "./../../Redux/Constants/ProductConstants";
 import { createProduct } from "./../../Redux/Actions/ProductActions";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
+import Toast from "../LoadingError/Toast";
 
 const AddProductMain = () => {
   const [name, setName] = useState("");
@@ -48,6 +49,7 @@ const AddProductMain = () => {
 
   return (
     <>
+      <Toast />
       <section className="content-main" style={{ maxWidth: "1200px" }}>
         <form onSubmit={submitHandler}>
           <div className="content-header">
@@ -133,8 +135,6 @@ const AddProductMain = () => {
                     <input
                       className="form-control mt-3"
                       type="file"
-                      value={image}
-                      onChange={(e) => setImage(e.target.value)}
                     />
                   </div>
                 </div>

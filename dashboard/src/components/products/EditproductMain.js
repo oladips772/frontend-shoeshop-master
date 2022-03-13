@@ -2,9 +2,18 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { PRODUCT_CREATE_RESET } from "./../../Redux/Constants/ProductConstants";
+import {
+  PRODUCT_CREATE_RESET,
+  PRODUCT_UPDATE_RESET,
+} from "./../../Redux/Constants/ProductConstants";
 import { toast } from "react-toastify";
-import { editProduct } from "./../../Redux/Actions/ProductActions";
+import {
+  editProduct,
+  updateProduct,
+} from "./../../Redux/Actions/ProductActions";
+import Loading from "../LoadingError/Loading";
+import Message from "../LoadingError/Error";
+import Toast from "../LoadingError/Toast";
 
 const EditProductMain = (props) => {
   const { productId } = props;
@@ -18,7 +27,7 @@ const EditProductMain = (props) => {
     pauseOnFocusLoss: false,
     draggable: false,
     pauseOnHover: false,
-    autoClose: 1000,
+    autoClose: 2000,
   };
 
   const dispatch = useDispatch();
@@ -26,22 +35,57 @@ const EditProductMain = (props) => {
   const productEditReducer = useSelector((state) => state.productEditReducer);
   const { loading, error, product } = productEditReducer;
 
+  const productUpdateReducer = useSelector(
+    (state) => state.productUpdateReducer
+  );
+
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = productUpdateReducer;
+
   useEffect(() => {
-    if (!product.name || product._id !== productId) {
-      dispatch(editProduct(productId));
+    if (successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET });
+      toast.success("updated succesfully", toastObjects);
     } else {
-      setName(product.name);
-      setDescription(product.description);
-      setImage(product.image);
-      setPrice(product.price);
-      setCountInStock(product.countInStock);
+      if (!product.name || product._id !== productId) {
+        dispatch(editProduct(productId));
+      } else {
+        setName(product.name);
+        setDescription(product.description);
+        setImage(product.image);
+        setPrice(product.price);
+        setCountInStock(product.countInStock);
+      }
     }
   }, [dispatch, product, productId]);
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(
+      updateProduct({
+        _id:productId,
+        name,
+        price,
+        description,
+        image,
+        countInStock,
+      })
+    );
+     setName("");
+     setDescription("");
+     setImage("");
+     setPrice(0);
+     setCountInStock(0);
+  };
+
   return (
     <>
+      <Toast />
       <section className="content-main" style={{ maxWidth: "1200px" }}>
-        <form>
+        <form onSubmit={submitHandler}>
           <div className="content-header">
             <Link to="/products" className="btn btn-danger text-white">
               Go to products
@@ -58,6 +102,10 @@ const EditProductMain = (props) => {
             <div className="col-xl-8 col-lg-8">
               <div className="card mb-4 shadow-sm">
                 <div className="card-body">
+                  {errorUpdate && (
+                    <Message variant="alert-danger">{errorUpdate}</Message>
+                  )}
+                  {loadingUpdate && <Loading />}
                   <div className="mb-4">
                     <label htmlFor="product_title" className="form-label">
                       Product title
