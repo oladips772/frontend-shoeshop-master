@@ -39,7 +39,7 @@ function App() {
           <PrivateRouter path="/products" component={ProductScreen} />
           <PrivateRouter path="/category" component={CategoriesScreen} />
           <PrivateRouter path="/orders" component={OrderScreen} />
-          <PrivateRouter path="/order" component={OrderDetailScreen} />
+          <PrivateRouter path="/order/:id" component={OrderDetailScreen} />
           <PrivateRouter path="/addproduct" component={AddProduct} />
           <PrivateRouter path="/users" component={UsersScreen} />
           <PrivateRouter

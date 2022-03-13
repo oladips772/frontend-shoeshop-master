@@ -1,7 +1,15 @@
+/** @format */
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Orders from "./Orders";
+import Message from "../LoadingError/Error";
+import Loading from "../LoadingError/Loading";
 
 const OrderMain = () => {
+  const dispatch = useDispatch();
+  const orderListReducer = useSelector((state) => state.orderListReducer);
+  const { loading, orders, error } = orderListReducer;
+
   return (
     <section className="content-main">
       <div className="content-header">
@@ -37,7 +45,13 @@ const OrderMain = () => {
         </header>
         <div className="card-body">
           <div className="table-responsive">
-            <Orders />
+            {loading ? (
+              <Loading />
+            ) : error ? (
+              <Message variant="alert-danger">{error}</Message>
+            ) : (
+              <Orders orders={orders} />
+            )}
           </div>
         </div>
       </div>

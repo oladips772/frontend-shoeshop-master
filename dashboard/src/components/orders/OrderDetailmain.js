@@ -1,9 +1,12 @@
+/** @format */
 import React from "react";
 import OrderDetailProducts from "./OrderDetailProducts";
 import OrderDetailInfo from "./OrderDetailInfo";
 import { Link } from "react-router-dom";
 
-const OrderDetailmain = () => {
+const OrderDetailmain = (props) => {
+  const { orderId } = props;
+
   return (
     <section className="content-main">
       <div className="content-header">
