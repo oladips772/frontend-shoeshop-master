@@ -18,9 +18,9 @@ const AddProductMain = () => {
   const toastObjects = {
     pauseOnFocusLoss: false,
     draggable: false,
-    pauseOnHover:false,
-    autoClose:1000,
-  }
+    pauseOnHover: false,
+    autoClose: 1000,
+  };
 
   const dispatch = useDispatch();
 
@@ -31,7 +31,7 @@ const AddProductMain = () => {
 
   useEffect(() => {
     if (product) {
-      toast.success("product added",toastObjects);
+      toast.success("product added", toastObjects);
       dispatch({ type: PRODUCT_CREATE_RESET });
       setName("");
       setDescription("");
@@ -43,7 +43,7 @@ const AddProductMain = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createProduct(name, price, description, image,countInStock));
+    dispatch(createProduct(name, price, description, image, countInStock));
   };
 
   return (
