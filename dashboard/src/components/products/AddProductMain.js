@@ -1,11 +1,48 @@
-import React from "react";
+/** @format */
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { PRODUCT_CREATE_RESET } from "./../../Redux/Constants/ProductConstants";
+import { createProduct } from "./../../Redux/Actions/ProductActions";
+import Message from "../LoadingError/Error";
+import Loading from "../LoadingError/Loading";
 
 const AddProductMain = () => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
+  const [price, setPrice] = useState(0);
+  const [countInStock, setCountInStock] = useState(0);
+
+  const dispatch = useDispatch();
+
+  const productCreateReducer = useSelector(
+    (state) => state.productCreateReducer
+  );
+  const { loading, error, product } = productCreateReducer;
+
+  useEffect(() => {
+    if (product) {
+      toast.success("product added");
+      dispatch({ type: PRODUCT_CREATE_RESET });
+      setName("");
+      setDescription("");
+      setImage("");
+      setPrice(0);
+      setCountInStock(0);
+    }
+  }, [dispatch, product]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(createProduct(name, price, description, image,countInStock));
+  };
+
   return (
     <>
       <section className="content-main" style={{ maxWidth: "1200px" }}>
-        <form>
+        <form onSubmit={submitHandler}>
           <div className="content-header">
             <Link to="/products" className="btn btn-danger text-white">
               Go to products
@@ -22,6 +59,8 @@ const AddProductMain = () => {
             <div className="col-xl-8 col-lg-8">
               <div className="card mb-4 shadow-sm">
                 <div className="card-body">
+                  {error && <Message variant="alert-danger">{error}</Message>}
+                  {loading && <Loading />}
                   <div className="mb-4">
                     <label htmlFor="product_title" className="form-label">
                       Product title
@@ -32,6 +71,8 @@ const AddProductMain = () => {
                       className="form-control"
                       id="product_title"
                       required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     />
                   </div>
                   <div className="mb-4">
@@ -44,6 +85,8 @@ const AddProductMain = () => {
                       className="form-control"
                       id="product_price"
                       required
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
                     />
                   </div>
                   <div className="mb-4">
@@ -56,6 +99,8 @@ const AddProductMain = () => {
                       className="form-control"
                       id="product_price"
                       required
+                      value={countInStock}
+                      onChange={(e) => setCountInStock(e.target.value)}
                     />
                   </div>
                   <div className="mb-4">
@@ -65,6 +110,8 @@ const AddProductMain = () => {
                       className="form-control"
                       rows="7"
                       required
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
                     ></textarea>
                   </div>
                   <div className="mb-4">
@@ -72,7 +119,9 @@ const AddProductMain = () => {
                     <input
                       className="form-control"
                       type="text"
-                      placeholder="Inter Image URL"
+                      placeholder="Enter Image URL"
+                      value={image}
+                      onChange={(e) => setImage(e.target.value)}
                     />
                     <input className="form-control mt-3" type="file" />
                   </div>

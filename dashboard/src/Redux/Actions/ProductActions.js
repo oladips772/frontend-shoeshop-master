@@ -9,7 +9,6 @@ import {
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_SUCCESS,
   PRODUCT_CREATE_FAIL,
-  PRODUCT_CREATE_RESET,
 } from "../Constants/ProductConstants";
 import axios from "axios";
 import { logout } from "./UserActions";
