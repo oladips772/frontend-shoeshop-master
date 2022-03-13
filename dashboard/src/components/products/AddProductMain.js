@@ -15,6 +15,13 @@ const AddProductMain = () => {
   const [price, setPrice] = useState(0);
   const [countInStock, setCountInStock] = useState(0);
 
+  const toastObjects = {
+    pauseOnFocusLoss: false,
+    draggable: false,
+    pauseOnHover:false,
+    autoClose:1000,
+  }
+
   const dispatch = useDispatch();
 
   const productCreateReducer = useSelector(
@@ -24,7 +31,7 @@ const AddProductMain = () => {
 
   useEffect(() => {
     if (product) {
-      toast.success("product added");
+      toast.success("product added",toastObjects);
       dispatch({ type: PRODUCT_CREATE_RESET });
       setName("");
       setDescription("");
@@ -123,7 +130,12 @@ const AddProductMain = () => {
                       value={image}
                       onChange={(e) => setImage(e.target.value)}
                     />
-                    <input className="form-control mt-3" type="file" />
+                    <input
+                      className="form-control mt-3"
+                      type="file"
+                      value={image}
+                      onChange={(e) => setImage(e.target.value)}
+                    />
                   </div>
                 </div>
               </div>
