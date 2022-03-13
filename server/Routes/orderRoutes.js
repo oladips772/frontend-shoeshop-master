@@ -6,6 +6,7 @@ import Order from "../Models/orderModel.js";
 
 const orderRoute = express.Router();
 
+
 // CREATE ORDER
 orderRoute.post(
   "/",
@@ -41,7 +42,30 @@ orderRoute.post(
   })
 );
 
-// GET ORDER BY ID  
+// ADMIN GET ALL ORDERS
+orderRoute.get(
+  "/all",
+  protect,
+  admin,
+  asyncHandler(async (req, res) => {
+    const orders = await Order.find({})
+      .sort({ _id: -1 })
+      .populate("user", "id name email");
+    res.json(orders);
+  })
+);
+
+// USER LOGIN ORDERS
+orderRoute.get(
+  "/",
+  protect,
+  asyncHandler(async (req, res) => {
+    const order = await Order.find({ user: req.user._id }).sort({ _id: -1 });
+    res.json(order);
+  })
+);
+
+// GET ORDER BY ID
 orderRoute.get(
   "/:id",
   protect,
@@ -83,29 +107,6 @@ orderRoute.put(
       res.status(404);
       throw new Error("Order Not Found");
     }
-  })
-);
-
-// ADMIN GET ALL ORDERS
-orderRoute.get(
-  "/all",
-  protect,
-  admin,
-  asyncHandler(async (req, res) => {
-    const orders = await Order.find({})
-      .sort({ _id: -1 })
-      .populate("user", "id name email");
-    res.json(orders);
-  })
-);
-
-// USER LOGIN ORDERS
-orderRoute.get(
-  "/",
-  protect,
-  asyncHandler(async (req, res) => {
-    const order = await Order.find({ user: req.user._id }).sort({ _id: -1 });
-    res.json(order);
   })
 );
 

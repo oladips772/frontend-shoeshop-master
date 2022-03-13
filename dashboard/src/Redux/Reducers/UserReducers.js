@@ -26,7 +26,7 @@ export const userLoginReducer = (state = {}, action) => {
   }
 };
 
-// AL USERS
+// ALL USERS
 export const userListReducer = (state = { users: [] }, action) => {
   switch (action.type) {
     case USER_LIST_REQUEST:
