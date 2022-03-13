@@ -86,6 +86,19 @@ orderRoute.put(
   })
 );
 
+// ADMIN GET ALL ORDERS
+orderRoute.get(
+  "/all",
+  protect,
+  admin,
+  asyncHandler(async (req, res) => {
+    const orders = await Order.find({})
+      .sort({ _id: -1 })
+      .populate("user", "id name email");
+    res.json(orders);
+  })
+);
+
 // USER LOGIN ORDERS
 orderRoute.get(
   "/",
@@ -95,5 +108,7 @@ orderRoute.get(
     res.json(order);
   })
 );
+
+
 
 export default orderRoute;
