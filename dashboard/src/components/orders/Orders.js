@@ -40,7 +40,7 @@ const Orders = (props) => {
                 }`}
               >
                 {order.isPaid
-                  ? `Paid on ${moment(order.createdAt).format("MMM Do Y")}`
+                  ? `Paid on ${moment(order.paidAt).format("MMM Do Y")}`
                   : "Not Paid"}
               </span>
             </td>
