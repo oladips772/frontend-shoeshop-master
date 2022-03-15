@@ -4,7 +4,7 @@ import OrderDetailProducts from "./OrderDetailProducts";
 import OrderDetailInfo from "./OrderDetailInfo";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrderDetails } from "../../Redux/Actions/OrderActions";
+import { deliverOrder, getOrderDetails } from "../../Redux/Actions/OrderActions";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
 import moment from "moment";
@@ -15,9 +15,16 @@ const OrderDetailmain = (props) => {
   const orderDetailsReducer = useSelector((state) => state.orderDetailsReducer);
   const { loading, error, order } = orderDetailsReducer;
 
+  const orderDeliveredReducer = useSelector((state) => state.orderDeliveredReducer);
+  const { loading: loadingDelivered, sucess: successDelivered} = orderDeliveredReducer;
+
   useEffect(() => {
     dispatch(getOrderDetails(orderId));
-  }, [dispatch, orderId]);
+  }, [dispatch, orderId, successDelivered]);
+   
+  const deliverHandler = (e) => {
+    e.preventDefault(dispatch(deliverOrder(order)));
+  }
 
   return (
     <section className="content-main">
@@ -26,7 +33,6 @@ const OrderDetailmain = (props) => {
           Back To Orders
         </Link>
       </div>
-
       {loading ? (
         <Loading />
       ) : error ? (
@@ -76,11 +82,23 @@ const OrderDetailmain = (props) => {
               </div>
               {/* Payment Info */}
               <div className="col-lg-3">
+                {order.isPaid && (
                 <div className="box shadow-sm bg-light">
-                  <button className="btn btn-dark col-12">
-                    MARK AS DELIVERED
+                  {loadingDelivered && (<Loading />)}
+                  <button
+                    className={`btn  ${
+                      order.isDelivered ? "btn-success col-12" : "btn-dark col-12"
+                    }`}
+                    onClick={deliverHandler}
+                  >
+                    {order.isDelivered
+                      ? `DELIVERED ON ${moment(order.DeliveredAt).format(
+                          "MMM Do Y"
+                        )}`
+                      : "MARK AS DELIVERED"}
                   </button>
                 </div>
+                  )}
               </div>
             </div>
           </div>

@@ -41,7 +41,7 @@ const LatestOrder = (props) => {
                     <td>{moment(order.createdAt).format("MMM Do Y")}</td>
                     <td className="d-flex justify-content-end align-item-center">
                       <Link
-                        to={`/order/:${order._id}`}
+                        to={`/order/${order._id}`}
                         className="text-success"
                       >
                         <i className="fas fa-eye"></i>
